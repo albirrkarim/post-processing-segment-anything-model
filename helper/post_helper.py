@@ -12,22 +12,22 @@ from sklearn.metrics import mean_squared_error
 
 # DIS
 import sys
-sys.path.append('/Users/susanto/Documents/Proyek/best-remove-background/latihan-remove-background/PytorchSuccessExample/algorithm/DIS/IS-Net')
-from DIS import getDISMask
+# sys.path.append('/Users/susanto/Documents/Proyek/best-remove-background/latihan-remove-background/PytorchSuccessExample/algorithm/DIS/IS-Net')
+# from DIS import getDISMask
 
 # InSPyReNet
-from transparent_background import Remover
+# from transparent_background import Remover
 
 # Matte former
-sys.path.append('/Users/susanto/Documents/Proyek/best-remove-background/latihan-remove-background/matteformer')
-import networks
-import utils_matteformer as utils
-from inference import generator_tensor_dict, single_inference
+# sys.path.append('/Users/susanto/Documents/Proyek/best-remove-background/latihan-remove-background/matteformer')
+# import networks
+# import utils_matteformer as utils
+# from inference import generator_tensor_dict, single_inference
 
 # AIM NET
-sys.path.append('/Users/susanto/Documents/Proyek/best-remove-background/latihan-remove-background/AIM')
-sys.path.append('/Users/susanto/Documents/Proyek/best-remove-background/latihan-remove-background/AIM/core')
-from aim import *
+# sys.path.append('/Users/susanto/Documents/Proyek/best-remove-background/latihan-remove-background/AIM')
+# sys.path.append('/Users/susanto/Documents/Proyek/best-remove-background/latihan-remove-background/AIM/core')
+# from aim import makeAIMNetModel, inference_img as AIMNET_Predictor
 
 
 def get_edge_mask(mask):
@@ -40,25 +40,21 @@ def get_edge_mask(mask):
     return edge_mask
 
 
-# InSPyReNet Remover Tool
-model_path_InSPyReNet = "/Users/susanto/Documents/Proyek/best-remove-background/models/InSPyReNet_SwinB_Large.pth"
+# # InSPyReNet Remover Tool
+# model_path_InSPyReNet = "/Users/susanto/Documents/Proyek/best-remove-background/models/InSPyReNet_SwinB_Large.pth"
 
-remover = Remover(fast=True, jit=True, device='cpu',
-                  ckpt=model_path_InSPyReNet)  # custom setting
-
-
+# remover = Remover(fast=True, jit=True, device='cpu',
+#                   ckpt=model_path_InSPyReNet)  # custom setting
 
 
-def InSPyReNetRemover(PIL_image):
-    return remover.process(PIL_image)
+# def InSPyReNetRemover(PIL_image):
+#     return remover.process(PIL_image)
 
 
 def saveMask(mask, name="example.jpg"):
     # Convert the binary mask to grayscale image
     gray_image = mask.astype(np.uint8) * 255
-
-    a = Image.fromarray(gray_image)
-    a.save("output/"+name)
+    Image.fromarray(gray_image).save(name)
 
 
 def makeTrimap(img, s_size=2, name="example"):
@@ -142,36 +138,33 @@ def makeTrimap(img, s_size=2, name="example"):
     return trimap.astype(np.uint8)
 
 
-def image_matting_matte_former(image_path, trimap_path):
-    # build model
-    model = networks.get_generator(is_train=False)
-    model.cpu()
+# def image_matting_matte_former(image_path, trimap_path,):
+#     # build model
+#     model = networks.get_generator(is_train=False)
+#     model.cpu()
 
-    checkpoint_path = "/Users/susanto/Documents/Proyek/best-remove-background/models/matteformer_image_matting.pth"
+#     checkpoint_path = "/Users/susanto/Documents/Proyek/best-remove-background/models/matteformer_image_matting.pth"
 
-    # build model
-    model = networks.get_generator(is_train=False)
-    # model.cpu()
+#     # build model
+#     model = networks.get_generator(is_train=False)
+#     # model.cpu()
 
-    # load checkpoint
-    checkpoint = torch.load(checkpoint_path, map_location=torch.device('cpu'))
+#     # load checkpoint
+#     checkpoint = torch.load(checkpoint_path, map_location=torch.device('cpu'))
 
-    model.load_state_dict(utils.remove_prefix_state_dict(
-        checkpoint['state_dict']), strict=True)
+#     model.load_state_dict(utils.remove_prefix_state_dict(
+#         checkpoint['state_dict']), strict=True)
 
-    # inference
-    model = model.eval()
+#     # inference
+#     model = model.eval()
 
-    # assume image and mask have the same file name
-    image_dict = generator_tensor_dict(image_path, trimap_path)
-    alpha_pred = single_inference(model, image_dict)
+#     # assume image and mask have the same file name
+#     image_dict = generator_tensor_dict(image_path, trimap_path)
+#     alpha_pred = single_inference(model, image_dict)
 
-    return alpha_pred
+#     return alpha_pred
 
 
-
-aim_model = makeAIMNetModel()
-
-def AIMNET_Predictor(np_img):
-    predict = inference_img(aim_model, np_img)
-    return predict
+# # def AIMNET_Predictor(aim_model,np_img):
+# #     predict = inference_img(aim_model, np_img)
+# #     return predict

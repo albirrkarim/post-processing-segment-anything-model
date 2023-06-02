@@ -3,4 +3,5 @@ output
 images
 sam_mask
 __pycache__
-algorithms
+
+algorithms/segment-anything
