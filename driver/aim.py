@@ -71,8 +71,7 @@ def evaluate_single_img(predict, alpha):
 def inference_once(model, scale_img, scale_trimap=None, device="cuda"):
     pred_list = []
     cuda = False
-
-    if cuda:
+    if device=='cuda':
         tensor_img = torch.from_numpy(scale_img.astype(
             np.float32)[:, :, :]).permute(2, 0, 1).cuda()
     else:
