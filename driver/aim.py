@@ -87,10 +87,10 @@ def inference_once(model, scale_img, scale_trimap=None, device="cuda"):
     input_t = input_t.unsqueeze(0)
     # forward
     pred_global, pred_local, pred_fusion = model(input_t)
-    pred_global = pred_global.data.to(device).numpy()
+    pred_global = pred_global.data.cpu().numpy()
     pred_global = gen_trimap_from_segmap_e2e(pred_global)
-    pred_local = pred_local.data.to(device).numpy()[0, 0, :, :]
-    pred_fusion = pred_fusion.data.to(device).numpy()[0, 0, :, :]
+    pred_local = pred_local.data.cpu().numpy()[0, 0, :, :]
+    pred_fusion = pred_fusion.data.cpu().numpy()[0, 0, :, :]
 
     return pred_global, pred_local, pred_fusion
 
