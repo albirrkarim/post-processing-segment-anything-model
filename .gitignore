@@ -1,4 +1,6 @@
-AIM500
+datasets
 output
 images
-segment-anything
+sam_mask
+__pycache__
+algorithms
